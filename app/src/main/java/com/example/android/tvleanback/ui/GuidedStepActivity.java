@@ -26,6 +26,7 @@ import android.support.v17.leanback.app.GuidedStepFragment;
 import android.support.v17.leanback.widget.GuidanceStylist;
 import android.support.v17.leanback.widget.GuidanceStylist.Guidance;
 import android.support.v17.leanback.widget.GuidedAction;
+import android.widget.Toast;
 
 import com.example.android.tvleanback.R;
 
@@ -38,6 +39,7 @@ public class GuidedStepActivity extends Activity {
 
     private static final int CONTINUE = 0;
     private static final int BACK = 1;
+    private static final int EDITABLE = 5;
     private static final int OPTION_CHECK_SET_ID = 10;
     private static final String[] OPTION_NAMES = {"Option A", "Option B", "Option C"};
     private static final String[] OPTION_DESCRIPTIONS = {"Here's one thing you can do",
@@ -98,6 +100,15 @@ public class GuidedStepActivity extends Activity {
             addAction(actions, BACK,
                     getResources().getString(R.string.guidedstep_cancel),
                     getResources().getString(R.string.guidedstep_nevermind));
+
+            // ISSUE
+            actions.add(new GuidedAction.Builder()
+                .id(EDITABLE)
+                .title("editable title")
+                .editable(true)
+                .editTitle("editable editTitle")
+                .description("editable description")
+                .build());
         }
 
         @Override
@@ -108,6 +119,23 @@ public class GuidedStepActivity extends Activity {
             } else {
                 getActivity().finishAfterTransition();
             }
+        }
+
+        @Override
+        public void onGuidedActionEdited(GuidedAction action) {
+            super.onGuidedActionEdited(action);
+
+            //
+            CharSequence title = action.getTitle();
+            CharSequence editTitle = action.getEditTitle();
+            CharSequence description = action.getDescription();
+
+            String s = "Editable action: " +
+                       "\ntitle: " + title +
+                       "\neditTitle: " + editTitle +
+                       "\ndescription: " + description;
+
+            Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
         }
     }
 
