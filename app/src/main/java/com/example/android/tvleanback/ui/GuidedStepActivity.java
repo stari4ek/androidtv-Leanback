@@ -26,6 +26,9 @@ import android.support.v17.leanback.app.GuidedStepFragment;
 import android.support.v17.leanback.widget.GuidanceStylist;
 import android.support.v17.leanback.widget.GuidanceStylist.Guidance;
 import android.support.v17.leanback.widget.GuidedAction;
+import android.support.v17.leanback.widget.GuidedActionEditText;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.tvleanback.R;
@@ -130,12 +133,19 @@ public class GuidedStepActivity extends Activity {
             CharSequence editTitle = action.getEditTitle();
             CharSequence description = action.getDescription();
 
+            View v = getActionItemView(getSelectedActionPosition());
+            GuidedActionEditText editText = (GuidedActionEditText)v.findViewById(R.id.guidedactions_item_title);
+            CharSequence textFromView = editText.getText();
+
             String s = "Editable action: " +
                        "\ntitle: " + title +
                        "\neditTitle: " + editTitle +
-                       "\ndescription: " + description;
+                       "\ndescription: " + description +
+                       "\ntextFromView: " + textFromView;
 
             Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+
+            Log.d("TEST", s);
         }
     }
 
