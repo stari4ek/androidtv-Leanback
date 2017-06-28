@@ -42,7 +42,9 @@ public class GuidedStepActivity extends Activity {
 
     private static final int CONTINUE = 0;
     private static final int BACK = 1;
-    private static final int EDITABLE = 5;
+    private static final int EDITABLE1 = 5;
+    private static final int EDITABLE2 = 6;
+
     private static final int OPTION_CHECK_SET_ID = 10;
     private static final String[] OPTION_NAMES = {
             "Option A",
@@ -113,12 +115,20 @@ public class GuidedStepActivity extends Activity {
 
             // ISSUE
             actions.add(new GuidedAction.Builder()
-                .id(EDITABLE)
-                .title("editable title")
+                .id(EDITABLE1)
+                .title("ED1: title")
                 .editable(true)
-                .editTitle("editable editTitle")
-                .description("editable description")
+                .editTitle("ED1:  editTitle")
+                .description("ED1: description")
                 .build());
+
+            actions.add(new GuidedAction.Builder()
+                            .id(EDITABLE2)
+                            .title("ED2: title")
+                            .editable(true)
+                            .editTitle("ED2: editTitle")
+                            .description("ED2:description")
+                            .build());
         }
 
         @Override
@@ -132,9 +142,17 @@ public class GuidedStepActivity extends Activity {
         }
 
         @Override
-        public void onGuidedActionEdited(GuidedAction action) {
-            super.onGuidedActionEdited(action);
+        public long onGuidedActionEditedAndProceed(GuidedAction action) {
+            reportEditable(action, "onGuidedActionEditedAndProceed");
+            return GuidedAction.ACTION_ID_NEXT;
+        }
 
+        @Override
+        public void onGuidedActionEditCanceled(GuidedAction action) {
+            reportEditable(action, "onGuidedActionEditCanceled");
+        }
+
+        private void reportEditable(GuidedAction action, String eventName) {
             //
             CharSequence title = action.getTitle();
             CharSequence editTitle = action.getEditTitle();
@@ -144,7 +162,7 @@ public class GuidedStepActivity extends Activity {
             GuidedActionEditText editText = (GuidedActionEditText)v.findViewById(R.id.guidedactions_item_title);
             CharSequence textFromView = editText.getText();
 
-            String s = "Editable action: " +
+            String s = eventName + ": " +
                        "\ntitle: " + title +
                        "\neditTitle: " + editTitle +
                        "\ndescription: " + description +
