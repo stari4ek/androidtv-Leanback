@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (c) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,8 +70,8 @@ public class Utils {
     }
 
     /**
-     * Example for handling resizing content for overscan.  Typically you won't need to resize
-     * when using the Leanback support library.
+     * Example for handling resizing content for overscan.  Typically you won't need to resize when
+     * using the Leanback support library.
      */
     public void overScan(Activity activity, VideoView videoView) {
         DisplayMetrics metrics = new DisplayMetrics();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (c) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,31 +20,28 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.example.android.tvleanback.BuildConfig;
 import com.example.android.tvleanback.R;
-import com.example.android.tvleanback.model.Movie;
+import com.example.android.tvleanback.model.Video;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an Image CardView
  */
 public class CardPresenter extends Presenter {
-    private static final String TAG = "CardPresenter";
-
-    private static int sSelectedBackgroundColor;
-    private static int sDefaultBackgroundColor;
+    private int mSelectedBackgroundColor = -1;
+    private int mDefaultBackgroundColor = -1;
     private Drawable mDefaultCardImage;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onCreateViewHolder");
-
-        sDefaultBackgroundColor = parent.getResources().getColor(R.color.default_background, null);
-        sSelectedBackgroundColor = parent.getResources().getColor(R.color.selected_background, null);
+        mDefaultBackgroundColor =
+            ContextCompat.getColor(parent.getContext(), R.color.default_background);
+        mSelectedBackgroundColor =
+                ContextCompat.getColor(parent.getContext(), R.color.selected_background);
         mDefaultCardImage = parent.getResources().getDrawable(R.drawable.movie, null);
 
         ImageCardView cardView = new ImageCardView(parent.getContext()) {
@@ -61,8 +58,8 @@ public class CardPresenter extends Presenter {
         return new ViewHolder(cardView);
     }
 
-    private static void updateCardBackgroundColor(ImageCardView view, boolean selected) {
-        int color = selected ? sSelectedBackgroundColor : sDefaultBackgroundColor;
+    private void updateCardBackgroundColor(ImageCardView view, boolean selected) {
+        int color = selected ? mSelectedBackgroundColor : mDefaultBackgroundColor;
 
         // Both background colors should be set because the view's
         // background is temporarily visible during animations.
@@ -72,23 +69,21 @@ public class CardPresenter extends Presenter {
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onBindViewHolder");
+        Video video = (Video) item;
 
-        Movie movie = (Movie) item;
         ImageCardView cardView = (ImageCardView) viewHolder.view;
-        Resources res = cardView.getResources();
+        cardView.setTitleText(video.title);
+        cardView.setContentText(video.studio);
 
-        if (movie.getCardImageUrl() != null) {
-            cardView.setTitleText(movie.getTitle());
-            cardView.setContentText(movie.getStudio());
-
+        if (video.cardImageUrl != null) {
             // Set card size from dimension resources.
+            Resources res = cardView.getResources();
             int width = res.getDimensionPixelSize(R.dimen.card_width);
             int height = res.getDimensionPixelSize(R.dimen.card_height);
             cardView.setMainImageDimensions(width, height);
 
             Glide.with(cardView.getContext())
-                    .load(movie.getCardImageUrl())
+                    .load(video.cardImageUrl)
                     .error(mDefaultCardImage)
                     .into(cardView.getMainImageView());
         }
@@ -96,8 +91,6 @@ public class CardPresenter extends Presenter {
 
     @Override
     public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onUnbindViewHolder");
-
         ImageCardView cardView = (ImageCardView) viewHolder.view;
 
         // Remove references to images so that the garbage collector can free up memory.

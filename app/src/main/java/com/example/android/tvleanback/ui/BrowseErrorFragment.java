@@ -1,16 +1,19 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (c) 2014 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.example.android.tvleanback.ui;
 
 import android.app.Fragment;
@@ -18,7 +21,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v17.leanback.app.ErrorFragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,19 +31,17 @@ import android.widget.ProgressBar;
 import com.example.android.tvleanback.R;
 
 /*
- * This class demonstrates how to extend ErrorFragment.
+ * This class demonstrates how to extend ErrorFragment to create an error dialog.
  */
 public class BrowseErrorFragment extends ErrorFragment {
-    private static final String TAG = "BrowseErrorFragment";
     private static final boolean TRANSLUCENT = true;
     private static final int TIMER_DELAY = 1000;
 
     private final Handler mHandler = new Handler();
-    SpinnerFragment mSpinnerFragment;
+    private SpinnerFragment mSpinnerFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setTitle(getResources().getString(R.string.app_name));
 
@@ -52,7 +52,6 @@ public class BrowseErrorFragment extends ErrorFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -65,12 +64,11 @@ public class BrowseErrorFragment extends ErrorFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
         mHandler.removeCallbacksAndMessages(null);
         getFragmentManager().beginTransaction().remove(mSpinnerFragment).commit();
     }
 
-    void setErrorContent() {
+    private void setErrorContent() {
         setImageDrawable(getResources().getDrawable(R.drawable.lb_ic_sad_cloud, null));
         setMessage(getResources().getString(R.string.error_fragment_message));
         setDefaultBackground(TRANSLUCENT);
@@ -80,14 +78,15 @@ public class BrowseErrorFragment extends ErrorFragment {
             @Override
             public void onClick(View arg0) {
                 getFragmentManager().beginTransaction().remove(BrowseErrorFragment.this).commit();
+                getFragmentManager().popBackStack();
             }
         });
     }
 
-    static public class SpinnerFragment extends Fragment {
+    public static class SpinnerFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+                Bundle savedInstanceState) {
             ProgressBar progressBar = new ProgressBar(container.getContext());
             if (container instanceof FrameLayout) {
                 Resources res = getResources();

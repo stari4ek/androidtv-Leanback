@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (c) 2014 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,16 @@ public class GuidedStepActivity extends Activity {
     private static final int BACK = 1;
     private static final int EDITABLE = 5;
     private static final int OPTION_CHECK_SET_ID = 10;
-    private static final String[] OPTION_NAMES = {"Option A", "Option B", "Option C"};
-    private static final String[] OPTION_DESCRIPTIONS = {"Here's one thing you can do",
-            "Here's another thing you can do", "Here's one more thing you can do"};
+    private static final String[] OPTION_NAMES = {
+            "Option A",
+            "Option B",
+            "Option C"
+    };
+    private static final String[] OPTION_DESCRIPTIONS = {
+            "Here's one thing you can do",
+            "Here's another thing you can do",
+            "Here's one more thing you can do"
+    };
     private static final int[] OPTION_DRAWABLES = {R.drawable.ic_guidedstep_option_a,
             R.drawable.ic_guidedstep_option_b, R.drawable.ic_guidedstep_option_c};
     private static final boolean[] OPTION_CHECKED = {true, false, false};
