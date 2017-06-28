@@ -43,7 +43,7 @@ public class GuidedStepActivity extends Activity {
     private static final int CONTINUE = 0;
     private static final int BACK = 1;
     private static final int EDITABLE1 = 5;
-    private static final int EDITABLE2 = 6;
+    private static final int REPORT_EDITABLE1 = 6;
 
     private static final int OPTION_CHECK_SET_ID = 10;
     private static final String[] OPTION_NAMES = {
@@ -106,12 +106,12 @@ public class GuidedStepActivity extends Activity {
 
         @Override
         public void onCreateActions(@NonNull List<GuidedAction> actions, Bundle savedInstanceState) {
-            addAction(actions, CONTINUE,
-                    getResources().getString(R.string.guidedstep_continue),
-                    getResources().getString(R.string.guidedstep_letsdoit));
-            addAction(actions, BACK,
-                    getResources().getString(R.string.guidedstep_cancel),
-                    getResources().getString(R.string.guidedstep_nevermind));
+//            addAction(actions, CONTINUE,
+//                    getResources().getString(R.string.guidedstep_continue),
+//                    getResources().getString(R.string.guidedstep_letsdoit));
+//            addAction(actions, BACK,
+//                    getResources().getString(R.string.guidedstep_cancel),
+//                    getResources().getString(R.string.guidedstep_nevermind));
 
             // ISSUE
             actions.add(new GuidedAction.Builder()
@@ -122,13 +122,9 @@ public class GuidedStepActivity extends Activity {
                 .description("ED1: description")
                 .build());
 
-            actions.add(new GuidedAction.Builder()
-                            .id(EDITABLE2)
-                            .title("ED2: title")
-                            .editable(true)
-                            .editTitle("ED2: editTitle")
-                            .description("ED2:description")
-                            .build());
+            addAction(actions, REPORT_EDITABLE1,
+                      "Show ED1",
+                      null);
         }
 
         @Override
@@ -136,6 +132,10 @@ public class GuidedStepActivity extends Activity {
             FragmentManager fm = getFragmentManager();
             if (action.getId() == CONTINUE) {
                 GuidedStepFragment.add(fm, new SecondStepFragment());
+            } else if (action.getId() == EDITABLE1) {
+                // nothing to do
+            } else if (action.getId() == REPORT_EDITABLE1) {
+                reportEditable(findActionById(EDITABLE1), "onGuidedActionClicked");
             } else {
                 getActivity().finishAfterTransition();
             }
@@ -158,15 +158,10 @@ public class GuidedStepActivity extends Activity {
             CharSequence editTitle = action.getEditTitle();
             CharSequence description = action.getDescription();
 
-            View v = getActionItemView(getSelectedActionPosition());
-            GuidedActionEditText editText = (GuidedActionEditText)v.findViewById(R.id.guidedactions_item_title);
-            CharSequence textFromView = editText.getText();
-
             String s = eventName + ": " +
                        "\ntitle: " + title +
                        "\neditTitle: " + editTitle +
-                       "\ndescription: " + description +
-                       "\ntextFromView: " + textFromView;
+                       "\ndescription: " + description;
 
             Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
 
