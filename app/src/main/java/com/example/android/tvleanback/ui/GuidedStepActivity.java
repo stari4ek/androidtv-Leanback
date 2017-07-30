@@ -98,6 +98,14 @@ public class GuidedStepActivity extends Activity {
             addAction(actions, BACK,
                     getResources().getString(R.string.guidedstep_cancel),
                     getResources().getString(R.string.guidedstep_nevermind));
+
+
+            actions.add(new GuidedAction.Builder(getActivity())
+                            .title("Issue: 64121113")
+                            .multilineDescription(true)
+                            .description("Some long line we would like to see formatted as multiple " +
+                                         "lines.")
+                            .build());
         }
 
         @Override
