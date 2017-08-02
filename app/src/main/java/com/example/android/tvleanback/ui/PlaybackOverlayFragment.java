@@ -368,8 +368,9 @@ public class PlaybackOverlayFragment
 
             // Set the Activity's MediaController used to invoke transport controls / adjust volume.
             try {
-                ((FragmentActivity) getActivity()).setSupportMediaController(
-                        new MediaControllerCompat(getActivity(), mSession.getSessionToken()));
+                MediaControllerCompat.setMediaController(
+                    getActivity(),
+                    new MediaControllerCompat(getActivity(), mSession.getSessionToken()));
                 setPlaybackState(PlaybackState.STATE_NONE);
             } catch (RemoteException e) {
                 e.printStackTrace();
